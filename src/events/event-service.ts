@@ -9,6 +9,7 @@ class EventService {
   }
 
   async getEvents(
+    city: string | null,
     page: number,
     limit: number,
     sortBy: string,
@@ -18,7 +19,13 @@ class EventService {
     const sortOptions: { [key: string]: SortOrder } = {
       [sortBy]: sortDirection === "asc" ? 1 : -1,
     };
-    return await EventModel.find()
+
+    const filter: { location?: string } = {};
+    if (city) {
+      filter.location = city;
+    }
+
+    return await EventModel.find(filter)
       .sort(sortOptions)
       .skip(skip)
       .limit(limit)

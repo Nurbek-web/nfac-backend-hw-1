@@ -21,12 +21,14 @@ class EventController {
 
   getEvents = async (req: Request, res: Response): Promise<void> => {
     try {
+      const city: string | null = (req.query.city as string) || null;
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const sortBy = (req.query.sortBy as string) || "date";
       const sortDirection =
         (req.query.sortDirection as "asc" | "desc") || "asc";
       const events = await this.eventService.getEvents(
+        city,
         page,
         limit,
         sortBy,
